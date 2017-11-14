@@ -1,4 +1,3 @@
-%  example code: explicit Euler for the 1D diffusion equation
 %  with x in [0,1] and t in [0,tf]
 
 clear all; clf
@@ -22,23 +21,16 @@ clear all; clf
   subplot(3,2,1); plot(x,u); title(sprintf('t=%4.3f',0))
 
 % integrate in time and plot 5 solutions
+A = diag(1+2*mu) + diag(-mu,1) + diag(-mu,-1);
 
   for n = 1:nt
-
-    u(j) = mu*u(j-1) + (1-2*mu)*u(j) + mu*u(j+1);
     u(1) = f1(n*dt); u(nx+1) = f2(n*dt);
-
+    b = u(j);
+    b(1) = u(2) + mu*u(1)
+    b(end) = u
+    u(j) = mu*u(j-1) + (1-2*mu)*u(j) + mu*u(j+1);   
     if mod(n,nt/5)==0
           subplot(3,2,5*n/nt+1); plot(x,u); title(sprintf('t=%4.3f',n*dt))
     end
   end
   
-
-% 
-% function [ output_args ] = Explicit_Euler( input_args )
-% %UNTITLED Summary of this function goes here
-% %   Detailed explanation goes here
-% 
-% 
-% end
-
