@@ -4,12 +4,14 @@ clear all; clf
 
 % initializations
   theta = 1/2;
-  tf = 0.02;                  % time window length
-  nx = 50; dx = 1/nx;         % number of points in x
-  nt = 1000; dt = tf/nt;      % number of timesteps
+  tf = 0.065;                  % time window length
+  nx = 20; dx = 1/nx;         % number of points in x
+  nt = 770; dt = tf/nt;      % number of timesteps
   
   x = linspace(0,1,nx+1);     % x-point coordinates
-  u = sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
+ u(1:nx/2) = x(1:nx/2); %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
+  u(nx/2+1:nx+1) = 1-x(nx/2+1:nx+1); %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
+
   f1= @(t)0;                  % lhs Dirichlet condition
   f2= @(t)0;                  % rhs Dirichlet condition
   mu = dt/(dx*dx); 
@@ -36,4 +38,3 @@ A = diag(a) + diag(d,1) + diag(d,-1);
           subplot(3,2,5*n/nt+1); plot(x,u); title(sprintf('t=%4.3f',n*dt))
     end
   end
-  
