@@ -1,7 +1,8 @@
+
+function pdex11
 clear all
 close all
-% initializations
-    tf = 0.065; % time window length
+tf = 0.065; % time window length
     nx = 20;       
     nt = 100;
     y = linspace(0,1,nx+1);
@@ -12,38 +13,12 @@ close all
     figure
     for i = 0:0.2:1        
         [xe,ue] = Explicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
-        subplot(3,2,1+i*5); 
+       % subplot(3,2,1+i*5); 
         plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
     end
-    suptitle('Explicit Euler');
-    figure
-    for i = 0:0.2:1        
-        [xi,ui] = Implicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
-        subplot(3,2,1+i*5); 
-        plot(xi,ui),title(sprintf('t=%4.3f',i*tf));
-    end
-    suptitle('Implicit Euler');
-    figure
-    for i = 0:0.2:1        
-        [xcn,ucn] = Crank_Nicolson(i*tf,nx,i*nt,f1,f2,ic);
-        subplot(3,2,1+i*5); 
-        plot(xcn,ucn),title(sprintf('t=%4.3f',i*tf));
-    end
-    suptitle('Crank Nicolson');
-    
-    %relatieve fouten
-    figure
-    subplot(3,1,1);
-    semilogy(xe,abs(xe-xi)),title('Explicit vs Implicit');
-    subplot(3,1,2);
-    semilogy(xe,abs(xe-xcn)),title('Explicit vs CN');
-    subplot(3,1,3);
-    semilogy(xi,abs(xi-xcn)),title('Implicit vs CN');
-    
-    
-    m = 0;
+ m = 0;
 x = linspace(0,1,20);
-t = linspace(0,2,5);
+t = linspace(0,0.065,5);
 
 sol = pdepe(m,@pdex1pde,@pdex1ic,@pdex1bc,x,t);
 % Extract the first solution component as u.
@@ -61,9 +36,11 @@ plot(x,u(end,:))
 title('Solution at t = 2')
 xlabel('Distance x')
 ylabel('u(x,2)')
+figure
+plot(x,u(end,:)
 % --------------------------------------------------------------
 function [c,f,s] = pdex1pde(x,t,u,DuDx)
-c = pi^2;
+c = 1;
 f = DuDx;
 s = 0;
 % --------------------------------------------------------------
@@ -73,6 +50,5 @@ u0 = -abs(x-0.5)+0.5;
 function [pl,ql,pr,qr] = pdex1bc(xl,ul,xr,ur,t)
 pl = ul;
 ql = 0;
-pr = pi * exp(-t);
-qr = 1;
-    
+pr = ur;
+qr = 0;

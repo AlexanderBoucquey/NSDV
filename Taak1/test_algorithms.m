@@ -34,9 +34,11 @@ close all
     %relatieve fouten
     figure
     subplot(3,1,1);
-    semilogy(xe,abs(xe-xi)),title('Explicit vs Implicit');
+    semilogy(xe,abs(ue-ui)),title('Explicit vs Implicit');
     subplot(3,1,2);
-    semilogy(xe,abs(xe-xcn)),title('Explicit vs CN');
+    semilogy(xe,abs(ue-ucn)),title('Explicit vs CN');
     subplot(3,1,3);
-    semilogy(xi,abs(xi-xcn)),title('Implicit vs CN');
+    semilogy(xi,abs(ui-ucn)),title('Implicit vs CN');
+    
+ 
     
