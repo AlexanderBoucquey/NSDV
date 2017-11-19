@@ -2,7 +2,7 @@
 function pdex11
 clear all
 close all
-tf = 0.065; % time window length
+    tf = 0.065; % time window length
     nx = 20;       
     nt = 100;
     y = linspace(0,1,nx+1);

@@ -34,45 +34,104 @@ close all
     %relatieve fouten
     figure
     subplot(3,1,1);
-    semilogy(xe,abs(xe-xi)),title('Explicit vs Implicit');
+    semilogy(xe,abs(ue-ui)),title('Explicit vs Implicit');
     subplot(3,1,2);
-    semilogy(xe,abs(xe-xcn)),title('Explicit vs CN');
+    semilogy(xe,abs(ue-ucn)),title('Explicit vs CN');
     subplot(3,1,3);
-    semilogy(xi,abs(xi-xcn)),title('Implicit vs CN');
+    semilogy(xi,abs(ui-ucn)),title('Implicit vs CN');
     
+ %---------------------------------------------------------------------------%
+ %vraag 2
+ % initializations
+    tf = 0.5; % time window length
+    nx = 20;       
+    nt = 401;
+    y = linspace(0,1,nx+1);
+    ic(1:nx+1) = sin(5*pi*y/2); %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
+     %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
+    f1= @(t)0;                  % lhs Dirichlet condition
+    f2= @(t)0;                  % rhs Dirichlet condition
+    figure
+    k = 1;
+    for i = [0,0.1,1]        
+        [xe,ue] = Explicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
+        subplot(3,1,k); 
+        plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
+        k = k+1;
+    end
+    suptitle('Explicit Euler');
+    figure
+    k = 1;
+    for i = [0,0.1,1]        
+        [xi,ui] = Implicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
+        subplot(3,1,k); 
+        plot(xi,ui),title(sprintf('t=%4.3f',i*tf));
+        k =k + 1;
+    end
+    suptitle('Implicit Euler');
+    figure
+    k= 1;
+    for i = [0,0.1,1]   
+        [xcn,ucn] = Crank_Nicolson(i*tf,nx,i*nt,f1,f2,ic);
+        subplot(3,1,k); 
+        plot(xcn,ucn),title(sprintf('t=%4.3f',i*tf));
+        k = k + 1;
+    end
+    suptitle('Crank Nicolson');
     
-    m = 0;
-x = linspace(0,1,20);
-t = linspace(0,2,5);
+    % initializations
+    tf = 0.5; % time window length
+    nx = 20;       
+    nt = 399;
+    y = linspace(0,1,nx+1);
+    ic(1:nx+1) = sin(5*pi*y/2); %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
+     %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
+    f1= @(t)0;                  % lhs Dirichlet condition
+    f2= @(t)0;                  % rhs Dirichlet condition
+    figure
+    k = 1;
+    for i = [0,0.1,1]        
+        [xe,ue] = Explicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
+        subplot(3,1,k); 
+        plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
+        k = k+1;
+    end
+    suptitle('Explicit Euler');
+    figure
+    k = 1;
+    for i = [0,0.1,1]        
+        [xi,ui] = Implicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
+        subplot(3,1,k); 
+        plot(xi,ui),title(sprintf('t=%4.3f',i*tf));
+        k =k + 1;
+    end
+    suptitle('Implicit Euler');
+    figure
+    k= 1;
+    for i = [0,0.1,1]   
+        [xcn,ucn] = Crank_Nicolson(i*tf,nx,i*nt,f1,f2,ic);
+        subplot(3,1,k); 
+        plot(xcn,ucn),title(sprintf('t=%4.3f',i*tf));
+        k = k + 1;
+    end
+    suptitle('Crank Nicolson');
+%-------------------------------------------------------------%
 
-sol = pdepe(m,@pdex1pde,@pdex1ic,@pdex1bc,x,t);
-% Extract the first solution component as u.
-u = sol(:,:,1);
-
-% A surface plot is often a good way to study a solution.
-surf(x,t,u) 
-title('Numerical solution computed with 20 mesh points.')
-xlabel('Distance x')
-ylabel('Time t')
-
-% A solution profile can also be illuminating.
-figure
-plot(x,u(end,:))
-title('Solution at t = 2')
-xlabel('Distance x')
-ylabel('u(x,2)')
-% --------------------------------------------------------------
-function [c,f,s] = pdex1pde(x,t,u,DuDx)
-c = pi^2;
-f = DuDx;
-s = 0;
-% --------------------------------------------------------------
-function u0 = pdex1ic(x)
-u0 = -abs(x-0.5)+0.5;
-% --------------------------------------------------------------
-function [pl,ql,pr,qr] = pdex1bc(xl,ul,xr,ur,t)
-pl = ul;
-ql = 0;
-pr = pi * exp(-t);
-qr = 1;
-    
+%Vraag3
+% initializations
+    tf = 0.5; % time window length
+    %nx = 20;       
+    %nt = 500;
+     %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
+     %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
+    f1= @(t)0;                  % lhs Dirichlet condition
+    f2= @(t)0;                  % rhs Dirichlet condition
+for nx=10*2.^[0:3]
+    y = linspace(0,1,nx+1);
+    ic(1:nx+1) = sin(pi*y);
+    for nt = 10*2.^[0:5]
+        [xi,ui] = Implicit_Euler(tf,nx,nt,f1,f2,ic);
+        u_exact = exp(-pi^2*tf)*sin(pi*y);
+        
+    end
+end
