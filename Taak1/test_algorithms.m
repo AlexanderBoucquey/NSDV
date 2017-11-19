@@ -141,3 +141,35 @@ for nx=10*2.^[0:3]
     i = i+1;
 end
 A
+
+i = 1;
+for nx=10*2.^[0:3]
+    j = 1;
+    y = linspace(0,1,nx+1);
+    ic = sin(pi*y);
+    for nt = 10*2.^[0:5]
+        
+        [xe,ue] = Explicit_Euler(tf,nx,nt,f1,f2,ic);
+        u_exact = exp(-pi^2*tf)*sin(pi*y);
+        B(i,j) = norm(ue-u_exact)/norm(u_exact);
+        j = j+1;
+    end
+    i = i+1;
+end
+B
+
+i = 1;
+for nx=10*2.^[0:3]
+    j = 1;
+    y = linspace(0,1,nx+1);
+    ic = sin(pi*y);
+    for nt = 10*2.^[0:5]
+        
+        [xcn,ucn] = Crank_Nicolson(tf,nx,nt,f1,f2,ic);
+        u_exact = exp(-pi^2*tf)*sin(pi*y);
+        C(i,j) = norm(ucn-u_exact)/norm(u_exact);
+        j = j+1;
+    end
+    i = i+1;
+end
+C
