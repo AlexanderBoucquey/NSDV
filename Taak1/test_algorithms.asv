@@ -10,11 +10,11 @@ close all
     f1= @(t)0;                  % lhs Dirichlet condition
     f2= @(t)0;                  % rhs Dirichlet condition
     figure
-    for i = 0:0.2:1        
-        [xe,ue] = Explicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
-        subplot(3,2,1+i*5); 
-        plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
-    end
+%     for i = 0:0.2:1        
+%         [xe,ue] = Explicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
+%         subplot(3,2,1+i*5); 
+%         plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
+%     end
     suptitle('Explicit Euler');
     figure
     for i = 0:0.2:1        
@@ -116,7 +116,7 @@ close all
     end
     suptitle('Crank Nicolson');
 %-------------------------------------------------------------%
-
+clear all
 %Vraag3
 % initializations
     tf = 0.5; % time window length
@@ -126,12 +126,50 @@ close all
      %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
     f1= @(t)0;                  % lhs Dirichlet condition
     f2= @(t)0;                  % rhs Dirichlet condition
+i = 1;
 for nx=10*2.^[0:3]
+    j = 1;
     y = linspace(0,1,nx+1);
     ic(1:nx+1) = sin(pi*y);
     for nt = 10*2.^[0:5]
+        
         [xi,ui] = Implicit_Euler(tf,nx,nt,f1,f2,ic);
         u_exact = exp(-pi^2*tf)*sin(pi*y);
-        
+        A(i,j) = norm(ui-u_exact)/norm(u_exact);
+        j = j+1;
     end
+    i = i+1;
 end
+A
+
+i = 1;
+for nx=10*2.^[0:3]
+    j = 1;
+    y = linspace(0,1,nx+1);
+    ic = sin(pi*y);
+    for nt = 10*2.^[0:5]
+        
+        [xe,ue] = Explicit_Euler(tf,nx,nt,f1,f2,ic);
+        u_exact = exp(-pi^2*tf)*sin(pi*y);
+        B(i,j) = norm(ue-u_exact)/norm(u_exact);
+        j = j+1;
+    end
+    i = i+1;
+end
+B
+
+i = 1;
+for nx=10*2.^[0:3]
+    j = 1;
+    y = linspace(0,1,nx+1);
+    ic = sin(pi*y);
+    for nt = 10*2.^[0:5]
+        
+        [xcn,ucn] = Crank_Nicolson(tf,nx,nt,f1,f2,ic);
+        u_exact = exp(-pi^2*tf)*sin(pi*y);
+        C(i,j) = norm(ucn-u_exact)/norm(u_exact);
+        j = j+1;
+    end
+    i = i+1;
+end
+C
