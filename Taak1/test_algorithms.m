@@ -16,6 +16,8 @@ close all
         [xe,ue] = Explicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
         subplot(3,2,1+i*5); 
         plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
+        xlabel('x');
+        ylabel('u','Rotation',0);
     end
     %suptitle('Explicit Euler');
     figure
@@ -23,6 +25,8 @@ close all
         [xi,ui] = Implicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
         subplot(3,2,1+i*5); 
         plot(xi,ui),title(sprintf('t=%4.3f',i*tf));
+        xlabel('x');
+        ylabel('u','Rotation',0);
     end
     %suptitle('Implicit Euler');
     figure
@@ -30,6 +34,8 @@ close all
         [xcn,ucn] = Crank_Nicolson(i*tf,nx,i*nt,f1,f2,ic);
         subplot(3,2,1+i*5); 
         plot(xcn,ucn),title(sprintf('t=%4.3f',i*tf));
+        xlabel('x');
+        ylabel('u','Rotation',0);
     end
     %suptitle('Crank Nicolson');
     
@@ -37,10 +43,16 @@ close all
     figure
     subplot(3,1,1);
     semilogy(xe,abs(ue-ui)),title('Explicit vs Implicit');
+    xlabel('x');
+    ylabel('difference');
     subplot(3,1,2);
     semilogy(xe,abs(ue-ucn)),title('Explicit vs CN');
+    xlabel('x');
+    ylabel('difference');
     subplot(3,1,3);
     semilogy(xi,abs(ui-ucn)),title('Implicit vs CN');
+    xlabel('x');
+    ylabel('difference');
     
  %---------------------------------------------------------------------------%
  %vraag 2
@@ -60,6 +72,8 @@ close all
         subplot(3,1,k); 
         plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
         k = k+1;
+        xlabel('x');
+        ylabel('u','Rotation',0);
     end
     %suptitle('Explicit Euler');
     figure
@@ -69,6 +83,8 @@ close all
         subplot(3,1,k); 
         plot(xi,ui),title(sprintf('t=%4.3f',i*tf));
         k =k + 1;
+        xlabel('x');
+        ylabel('u','Rotation',0);
     end
     %suptitle('Implicit Euler');
     figure
@@ -78,6 +94,8 @@ close all
         subplot(3,1,k); 
         plot(xcn,ucn),title(sprintf('t=%4.3f',i*tf));
         k = k + 1;
+        xlabel('x');
+        ylabel('u','Rotation',0);
     end
     %suptitle('Crank Nicolson');
     
@@ -97,6 +115,8 @@ close all
         subplot(3,1,k); 
         plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
         k = k+1;
+        xlabel('x');
+        ylabel('u','Rotation',0);
     end
     %suptitle('Explicit Euler');
     figure
@@ -106,6 +126,8 @@ close all
         subplot(3,1,k); 
         plot(xi,ui),title(sprintf('t=%4.3f',i*tf));
         k =k + 1;
+        xlabel('x');
+        ylabel('u','Rotation',0);
     end
     %suptitle('Implicit Euler');
     figure
@@ -115,6 +137,8 @@ close all
         subplot(3,1,k); 
         plot(xcn,ucn),title(sprintf('t=%4.3f',i*tf));
         k = k + 1;
+        xlabel('x');
+        ylabel('u','Rotation',0);
     end
    % suptitle('Crank Nicolson');
 %-------------------------------------------------------------%
@@ -195,6 +219,9 @@ C
         subplot(3,2,k); 
         plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
         k = k+1;
+        xlabel('x');
+        ylabel('u','Rotation',0);
+        
     end
     %suptitle('Explicit Euler oef 4');
       k = 1;
@@ -219,6 +246,8 @@ C
         subplot(3,2,k); 
         plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
         k = k+1;
+        xlabel('x');
+        ylabel('u','Rotation',0);
     end
     %suptitle('Explicit Euler oef 5');
       k = 1;
