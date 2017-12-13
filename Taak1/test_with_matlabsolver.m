@@ -3,38 +3,51 @@ function pdex11
 clear all
 close all
     tf = 0.065; % time window length
-    nx = 20;       
-    nt = 100;
+    nx = 200;       
+    nt = 10000;
     y = linspace(0,1,nx+1);
     ic(1:nx/2) = y(1:nx/2); %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
     ic(nx/2+1:nx+1) = 1-y(nx/2+1:nx+1); %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
     f1= @(t)0;                  % lhs Dirichlet condition
     f2= @(t)0;                  % rhs Dirichlet condition
-    
-    for i = 0:0.2:1        
-        [xe,ue] = Explicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
-       % subplot(3,2,1+i*5); 
-       % plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
-    end
-    for i = 0:0.2:1        
-        [xi,ui] = Implicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
-      %  subplot(3,2,1+i*5); 
-       % plot(xi,ui),title(sprintf('t=%4.3f',i*tf));
-    end
-    for i = 0:0.2:1        
-        [xcn,ucn] = Crank_Nicolson(i*tf,nx,i*nt,f1,f2,ic);
-      %  subplot(3,2,1+i*5); 
-        %plot(xcn,ucn),title(sprintf('t=%4.3f',i*tf));
-    end
- m = 0;
-x = linspace(0,1,21);
-t = linspace(0,0.065,5);
+    m = 0;
+x = linspace(0,1,201);
+t = linspace(0,0.065,6);
 
 sol = pdepe(m,@pdex1pde,@pdex1ic,@pdex1bc,x,t);
 % Extract the first solution component as u.
 u = sol(:,:,1);
+    figure
+    for i = 0:0.2:1        
+        [xe,ue] = Explicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
+        subplot(3,2,1+i*5); 
+       semilogy(x,abs(u(i*5+1,:)-ue)),title(sprintf('t=%4.3f',i*tf)),xlabel('x'),ylabel('verschil');
+
+       %plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
+    end
+   
+    figure
+    for i = 0:0.2:1        
+        [xi,ui] = Implicit_Euler(i*tf,nx,i*nt,f1,f2,ic);
+        subplot(3,2,1+i*5),xlabel('x'),ylabel('verschil'); 
+       semilogy(x,abs(u(i*5+1,:)-ui)),title(sprintf('t=%4.3f',i*tf)),xlabel('x'),ylabel('verschil');
+      %  subplot(3,2,1+i*5); 
+       % plot(xi,ui),title(sprintf('t=%4.3f',i*tf));
+    end
+    figure
+    for i = 0:0.2:1        
+        [xcn,ucn] = Crank_Nicolson(i*tf,nx,i*nt,f1,f2,ic);
+        subplot(3,2,1+i*5),xlabel('x'),ylabel('verschil'); 
+       semilogy(x,abs(u(i*5+1,:)-ucn)),title(sprintf('t=%4.3f',i*tf)),xlabel('x'),ylabel('verschil');
+      %  subplot(3,2,1+i*5); 
+        %plot(xcn,ucn),title(sprintf('t=%4.3f',i*tf));
+    end
+
+ 
+ 
 
 % A surface plot is often a good way to study a solution.
+figure
 surf(x,t,u) 
 title('Numerical solution computed with 20 mesh points.')
 xlabel('Distance x')
@@ -46,12 +59,7 @@ plot(x,u(end,:))
 title('Solution at t = 2')
 xlabel('Distance x')
 ylabel('u(x,2)')
-figure
-semilogy(x,abs(u(end,:)-ue))
-figure
-semilogy(x,abs(u(end,:)-ui))
-figure
-semilogy(x,abs(u(end,:)-ucn))
+
 % --------------------------------------------------------------
 function [c,f,s] = pdex1pde(x,t,u,DuDx)
 c = 1;

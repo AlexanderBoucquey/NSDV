@@ -8,7 +8,7 @@ close all
     y = linspace(0,1,nx+1);
 %     ic(1:nx/2) = y(1:nx/2); %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
 %     ic(nx/2+1:nx+1) = 1-y(nx/2+1:nx+1); %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
-    ic(:)= linspace(1,1, nx+1);
+    ic= linspace(1,1, nx+1);
     f1= @(t)0;                  % lhs Dirichlet condition
     f2= @(t)0;                  % rhs Dirichlet condition
     figure
@@ -44,15 +44,15 @@ close all
     subplot(3,1,1);
     semilogy(xe,abs(ue-ui)),title('Explicit vs Implicit');
     xlabel('x');
-    ylabel('difference');
+    ylabel('verschil');
     subplot(3,1,2);
     semilogy(xe,abs(ue-ucn)),title('Explicit vs CN');
     xlabel('x');
-    ylabel('difference');
+    ylabel('verschil');
     subplot(3,1,3);
     semilogy(xi,abs(ui-ucn)),title('Implicit vs CN');
     xlabel('x');
-    ylabel('difference');
+    ylabel('verschil');
     
  %---------------------------------------------------------------------------%
  %vraag 2
@@ -161,7 +161,7 @@ for nx=10*2.^[0:3]
         
         [xi,ui] = Implicit_Euler(tf,nx,nt,f1,f2,ic);
         u_exact = exp(-pi^2*tf)*sin(pi*y);
-        A(i,j) = norm(ui-u_exact)/norm(u_exact);
+        A(i,j) = norm(ui-u_exact,inf);
         j = j+1;
     end
     i = i+1;
@@ -193,7 +193,7 @@ for nx=10*2.^[0:3]
         
         [xcn,ucn] = Crank_Nicolson(tf,nx,nt,f1,f2,ic);
         u_exact = exp(-pi^2*tf)*sin(pi*y);
-        C(i,j) = norm(ucn-u_exact)/norm(u_exact);
+        C(i,j) = norm(ucn-u_exact,inf);
         j = j+1;
     end
     i = i+1;
@@ -202,10 +202,10 @@ C
 %---------------------------------------------------------------------------%
  %vraag 4
  % initializations
- clear all
+ clear ic y
     tf = 1; % time window length
-    nx = 80;       
-    nt = 1500;
+    nx = 1000;       
+    nt = 1500000;
     y = linspace(0,1,nx+1);
     ic(1:nx+1) = abs(sin(2*pi*y)); %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
      %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
@@ -215,7 +215,7 @@ C
     figure
     k = 1;
     for i = [0,0.2,0.4,0.6,0.8,1.0]        
-        [xe,ue] = Explicit_Euler_4(i*tf,nx,i*nt,f1,f2,ic,b);
+        [xe,ue] = Viscous_Burgers(i*tf,nx,i*nt,f1,f2,ic,b);
         subplot(3,2,k); 
         plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
         k = k+1;
@@ -229,10 +229,10 @@ C
  %---------------------------------------------------------------------------%
  %vraag 5
  % initializations
- clear all
-    tf = 5; % time window length
-    nx = 80;       
-    nt = 1500;
+ clear ic y
+    tf = 10; % time window length
+    nx = 1000;       
+    nt = 1500000;
     y = linspace(0,1,nx+1);
     ic(1:nx+1) = sin(3*pi*y.^2)/(3*pi*y.^2); %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
      %sin(20*pi*x.^2.*(1-x)); % initial condition (MATLAB syntax!)
@@ -242,7 +242,7 @@ C
     figure
     k = 1;
     for i = [0,0.2,0.4,0.6,0.8,1.0]        
-        [xe,ue] = Explicit_Euler_5(i*tf,nx,i*nt,f1,f2,ic,b);
+        [xe,ue] = Phase_Field_Equation(i*tf,nx,i*nt,f1,f2,ic,b);
         subplot(3,2,k); 
         plot(xe,ue),title(sprintf('t=%4.3f',i*tf));
         k = k+1;
