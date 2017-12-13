@@ -15,8 +15,9 @@ function [x, y, u] = Explicit_Euler_transp(tf,nx,ny,nt,f1,f2,f3,f4,ic)
   u(:,:,1) = ic;
   k = 1;
   for n = 1:nt
-    u(jx,jy,k+1) = mux*u(jx-1,jy,k) + (1-2*mux-2*muy)*u(jx,jy,k) + ...
-        mux*u(jx+1,jy,k)+ muy*u(jx,jy-1,k) + muy*u(jx,jy+1,k);
+ 
+      u(jx,jy,k+1) = -1/2*mux*u(jx-1,jy,k) + u(jx,jy,k) + ...
+        1/2*mux*u(jx+1,jy,k)- 1/2*muy*u(jx,jy-1,k) + 1/2*muy*u(jx,jy+1,k);
     u(1,:,k+1) = f1(n*dt);
     u(nx+1,:,k+1) = f2(n*dt); 
     u(:,1,k+1) = f3(n*dt);
