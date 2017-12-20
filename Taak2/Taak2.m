@@ -132,23 +132,14 @@ f4= @(t)0;                  % abhs Dirichlet condition
 i = 1;
 max_err = zeros(50/5-1,1);
 for nx = 10:5:50
+    t = tf;
     ny = nx;
     nt = ((nx/10)^2*500);
     [x,y]=meshgrid((0:nx)/(nx),(0:ny)/(ny));    
     ic_2=sin(pi*x).*sin(pi*y);  % Bvw 
-    u_exact_heat = @(x,y,t) sin(pi*x)*sin(pi*y)*exp(-2*pi^2*t); 
+    u_exact_heat = sin(pi*x).*sin(pi*y)*exp(-2*pi^2*t); 
     [xe,ye, ue] = Explicit_Euler_heat(tf,nx,ny,nt,f1,f2,f3,f4,ic_2);
-
-    for xn = 1:(nx/5-1)
-        x = xe(1,xn);
-        for yn = 1:(ny/5-1)
-            y = ye(1,yn);
-            err = abs(u_exact_heat(x,y,0.1) - ue(xn,yn,nt+1));
-            if (err > max_err(i))
-                max_err(i,1) = err;
-            end
-        end
-    end
+    max_err(i) = max(max(u_exact_heat-ue(:,:,nt+1)));
     i = i+1;
 end
 semilogy(linspace(10,50,9),max_err);
@@ -157,31 +148,17 @@ i = 1;
 max_errw = zeros(100/5-1,1);
 max_errt = zeros(100/5-1,1);
 for nx = 10:5:100
+    t = tf;
     ny = nx;
     nt = (nx/10)*500;
     [x,y]=meshgrid((0:nx)/(nx),(0:ny)/(ny));    
     ic_2=sin(pi*x).*sin(pi*y);  % Bvw 
-    u_exact_wave = @(x,y,t) sin(pi*x)*sin(pi*y)*cos(sqrt(2)*pi*t);
-    u_exact_transport = @(x,y,t) sin(pi*(x+t))*sin(pi*(y+t));
+    u_exact_wave = sin(pi*x).*sin(pi*y)*cos(sqrt(2)*pi*t);
+    u_exact_transport = sin(pi*(x+t)).*sin(pi*(y+t));
     [xw,yw, uw] = Explicit_Euler_wave(tf,nx,ny,nt,f1,f2,f3,f4,ic_2);
     [xut,yut, ut] = Upwind_transp(tf,nx,ny,nt,f1,f2,f3,f4,ic_2);
-
-    for xn = 1:(nx/5-1)
-        x1 = xw(1,xn);
-        x2 = xut(1,xn);
-        for yn = 1:(ny/5-1)
-            y1 = yw(1,yn);
-            y2 = yut(1,yn);
-            errw = abs(u_exact_wave(x1,y1,0.1) - uw(xn,yn,nt+2));
-            errt = abs(u_exact_transport(x2,y2,0.1) - ut(xn,yn,nt+1));
-            if (errw > max_errw(i))
-                max_errw(i,1) = errw;
-            end
-            if (errt > max_errt(i))
-                max_errt(i,1) = errt;
-            end
-        end
-    end
+    max_errw(i) = max(max(u_exact_wave-uw(:,:,nt+2)));
+    max_errt(i) = max(max(u_exact_transport-ut(:,:,nt+1)));
     i = i+1;
 end
 figure();
