@@ -38,10 +38,12 @@ for nx = 10:5:100
     ic_2=sin(pi*x).*sin(pi*y);  % Bvw 
     u_exact_wave = sin(pi*x).*sin(pi*y)*cos(sqrt(2)*pi*t);
     u_exact_transport = sin(pi*(x+t)).*sin(pi*(y+t));
+    u_exact_transport(ceil(9/10*nx):nx+1,:) = zeros(floor(1/10*nx)+2,nx+1);
+    u_exact_transport(:,ceil(9/10*ny):ny+1) = zeros(ny+1,floor(1/10*ny)+2);
     [xw,yw, uw] = Explicit_Euler_wave(tf,nx,ny,nt,f1,f2,f3,f4,ic_2);
     [xut,yut, ut] = Upwind_transp(tf,nx,ny,nt,f1,f2,f3,f4,ic_2);
     max_errw(i) = max(max(abs(u_exact_wave-uw(:,:,nt+2))));
-    max_errt(i) = max(max(abs(u_exact_transport(:,:)-ut(:,:,nt+1))));
+    max_errt(i) = max(max(abs(u_exact_transport-ut(:,:,nt+1))));
     i = i+1;
 end
 figure();
